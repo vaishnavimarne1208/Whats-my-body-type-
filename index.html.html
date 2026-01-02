@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's My Body Type? | Body Shape Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f3f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #ff6b9d, #ff9a9e);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .intro h2 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .highlight {
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+        
+        .measurement-guide {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .measurement-guide h2 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .measurement-step {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .measurement-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .measurement-step h3 {
+            color: #ff7ea5;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+        
+        .calculator {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .calculator h2 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #ff6b9d;
+            outline: none;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #calculateBtn {
+            background-color: #ff6b9d;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #ff4d87;
+            transform: translateY(-3px);
+        }
+        
+        #resetBtn {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .results {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+        
+        .results h2 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .body-type {
+            background: linear-gradient(135deg, #ffeff6, #ffffff);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #ff6b9d;
+        }
+        
+        .body-type h3 {
+            color: #ff4d87;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .styling-tips {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .styling-tips h3 {
+            color: #ff4d87;
+            margin-bottom: 15px;
+        }
+        
+        .tips-content {
+            padding: 15px;
+        }
+        
+        .tips-content p {
+            margin-bottom: 15px;
+        }
+        
+        .tips-toggle {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .general-tips {
+            background-color: #f0f8ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .general-tips h3 {
+            color: #ff4d87;
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        .body-shape-icon {
+            font-size: 2rem;
+            color: #ff6b9d;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-venus"></i> What's My Body Type?
+            </div>
+            <h1>Discover Your Body Shape</h1>
+            <p class="tagline">Understanding your body shape is the first step to finding clothes that make you feel yourself, amazing and fabulous...</p>
+        </header>
+        
+        <section class="intro">
+            <h2><i class="fas fa-gem"></i> Discover Your Perfect Fit</h2>
+            <p>Unlock your shape with our quick calculator. Knowing your body type helps you choose clothes that highlight your best features and make you feel confident.</p>
+            <p>Let's get your quick measurements (in centimeters)...</p>
+        </section>
+        
+        <section class="measurement-guide">
+            <h2><i class="fas fa-tape"></i> How to Measure Correctly</h2>
+            
+            <div class="measurement-step">
+                <h3><i class="fas fa-ruler body-shape-icon"></i> Chest/Bust</h3>
+                <p>The circumference measured around the chest over the fullest part of the breasts, while wearing a properly fitted bra.</p>
+            </div>
+            
+            <div class="measurement-step">
+                <h3><i class="fas fa-ruler body-shape-icon"></i> Waist</h3>
+                <p>The smallest circumference measured around the natural waist, just above the belly button.</p>
+            </div>
+            
+            <div class="measurement-step">
+                <h3><i class="fas fa-ruler body-shape-icon"></i> High Hip</h3>
+                <p>The circumference of the upper swell of the hip over the pelvic region. It is around 7 inches (18 cm) below the natural waist.</p>
+            </div>
+            
+            <div class="measurement-step">
+                <h3><i class="fas fa-ruler body-shape-icon"></i> Hip</h3>
+                <p>The largest circumference measured around the hips over the largest part of the buttocks.</p>
+            </div>
+        </section>
+        
+        <section class="calculator">
+            <h2><i class="fas fa-calculator"></i> Enter Your Measurements</h2>
+            
+            <div class="input-group">
+                <label for="chest">Chest/Bust Size (cm):</label>
+                <input type="number" id="chest" placeholder="Enter chest measurement in centimeters" min="60" max="150" step="0.1">
+            </div>
+            
+            <div class="input-group">
+                <label for="waist">Waist Size (cm):</label>
+                <input type="number" id="waist" placeholder="Enter waist measurement in centimeters" min="50" max="140" step="0.1">
+            </div>
+            
+            <div class="input-group">
+                <label for="highHip">High Hip Size (cm):</label>
+                <input type="number" id="highHip" placeholder="Enter high hip measurement in centimeters" min="60" max="150" step="0.1">
+            </div>
+            
+            <div class="input-group">
+                <label for="hip">Hip Size (cm):</label>
+                <input type="number" id="hip" placeholder="Enter hip measurement in centimeters" min="70" max="160" step="0.1">
+            </div>
+            
+            <div class="buttons">
+                <button id="calculateBtn"><i class="fas fa-magic"></i> Calculate My Body Type</button>
+                <button id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
+            </div>
+        </section>
+        
+        <section class="results" id="results">
+            <h2><i class="fas fa-chart-pie"></i> Your Body Type Results</h2>
+            <div class="body-type" id="bodyTypeResult">
+                <!-- Results will be displayed here -->
+            </div>
+            
+            <div class="tips-toggle">
+                <button id="tipsToggleBtn"><i class="fas fa-tshirt"></i> Show Styling Tips for My Body Type</button>
+            </div>
+            
+            <div class="styling-tips" id="stylingTips">
+                <!-- Styling tips will be displayed here -->
+            </div>
+            
+            <div class="general-tips" id="generalTips">
+                <h3><i class="fas fa-lightbulb"></i> General Styling Tips</h3>
+                <div class="tips-content">
+                    <p><strong>Fit is Key:</strong> Clothes that fit properly always look better than too tight or too loose. Find clothing that skims your body without clinging.</p>
+                    <p><strong>Layering:</strong> Use layers to add shape, such as jackets or cardigans that can define the waist.</p>
+                    <p><strong>Color Blocking:</strong> Experiment with color blocking to draw attention to certain areas of the body or balance proportions.</p>
+                    <p><strong>Accessories:</strong> Belts can help define the waist and add interest to outfits, while scarves or statement jewelry can draw attention to the face and upper body.</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p><strong><i class="fas fa-heart"></i> What's My Body Type?</strong> | Your Personal Body Shape Calculator</p>
+            <p>Remember: All bodies are beautiful. This tool is meant to help you find clothes that make you feel confident and comfortable.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const tipsToggleBtn = document.getElementById('tipsToggleBtn');
+            const resultsSection = document.getElementById('results');
+            const bodyTypeResult = document.getElementById('bodyTypeResult');
+            const stylingTips = document.getElementById('stylingTips');
+            const generalTips = document.getElementById('generalTips');
+            
+            // Body type calculation logic based on the Python code
+            function calculateBodyType(C, W, HH, H) {
+                // Convert inputs to numbers
+                C = parseFloat(C);
+                W = parseFloat(W);
+                HH = parseFloat(HH);
+                H = parseFloat(H);
+                
+                // Check all conditions from the Python code
+                if (((C - H) <= 1 && (H - C) < 3.6 && (C - W) >= 9) || (H - W) >= 10) {
+                    return {type: "Hourglass", description: "You have a great Hourglass body shape"};
+                } else if ((H - C) >= 3.6 && (H - C) < 10 && (H - W) >= 9 && (HH / W) < 1.193) {
+                    return {type: "Bottom Hourglass", description: "You have a great Bottom hourglass body shape"};
+                } else if ((C - H) > 1 && (C - H) < 10 && (C - W) >= 9) {
+                    return {type: "Top Hourglass", description: "You have a great Top hourglass body shape"};
+                } else if ((H - C) > 2 && (H - W) >= 7 && (HH / W) >= 1.193) {
+                    return {type: "Spoon", description: "You have a great Spoon body shape"};
+                } else if ((H - C) >= 3.6 && (H - W) < 9) {
+                    return {type: "Triangle", description: "You have a great Triangle body shape"};
+                } else if ((C - H) >= 3.6 && (C - W) < 9) {
+                    return {type: "Inverted Triangle", description: "You have a great Inverted triangle body shape"};
+                } else if ((H - C) < 3.6 && (C - H) < 3.6 && (C - W) < 9 && (H - W) < 10) {
+                    return {type: "Rectangle", description: "You have a great Rectangle body shape"};
+                } else {
+                    return {type: "Unique", description: "Your body type is very unique ; It cannot be named"};
+                }
+            }
+            
+            // Get styling tips based on body type
+            function getStylingTips(bodyType) {
+                const tips = {
+                    "Hourglass": {
+                        title: "Hourglass Body Shape",
+                        content: `<h3><i class="fas fa-hourglass-half"></i> Greatttt here are some tips for your beautiful Hourglass body shape</h3>
+                        <p><strong>Key features:</strong> Balanced bust and hips with a defined waist.</p>
+                        <p><strong>Top:</strong> V-necks, scoop necks, wrap tops, and fitted tops. These accentuate the waist and highlight the curves.</p>
+                        <p><strong>Bottom:</strong> High-waisted pants or skirts that define the waist. Straight-leg or bootcut pants balance out the hips.</p>
+                        <p><strong>Dresses:</strong> Fit-and-flare styles, wrap dresses, or sheath dresses that hug the waist and accentuate curves.</p>
+                        <p><strong>Avoid:</strong> Loose, boxy tops or bottom-heavy outfits that hide your shape.</p>`
+                    },
+                    "Bottom Hourglass": {
+                        title: "Bottom Hourglass Body Shape",
+                        content: `<h3><i class="fas fa-hourglass-end"></i> Greatttt here are some tips for your beautiful Bottom Hourglass body shape</h3>
+                        <p><strong>Key features:</strong> Wider hips with a smaller bust and waist.</p>
+                        <p><strong>Top:</strong> Go for tops with details like ruffles, puff sleeves, or horizontal lines to add volume to the bust area. This will balance out the lower body.</p>
+                        <p><strong>Bottom:</strong> High-waisted, wide-leg pants or A-line skirts that help smooth the hips and create balance. Opt for dark-colored bottoms to draw less attention to the lower half.</p>
+                        <p><strong>Dresses:</strong> A-line dresses or fit-and-flare dresses that add volume to the top while slimming the lower half.</p>
+                        <p><strong>Avoid:</strong> Skinny jeans or tight-fitting pants that draw attention to the hips.</p>`
+                    },
+                    "Top Hourglass": {
+                        title: "Top Hourglass Body Shape",
+                        content: `<h3><i class="fas fa-hourglass-start"></i> Greatttt here are some tips for your beautiful Top Hourglass body shape</h3>
+                        <p><strong>Key features:</strong> Fuller bust with a narrower waist and smaller hips.</p>
+                        <p><strong>Top:</strong> Deep V-neck or scoop-neck tops to elongate the neck and minimize the bust. Fitted tops that define the waist will also create balance.</p>
+                        <p><strong>Bottom:</strong> High-waisted pants or skirts, pencil skirts, or bootcut pants to add volume to the lower half and balance proportions.</p>
+                        <p><strong>Dresses:</strong> Empire waist dresses or A-line dresses that create balance by adding volume to the hips and softening the bust area.</p>
+                        <p><strong>Avoid:</strong> High-neck tops, excessively loose tops, or overly tight bottoms that emphasize the upper body.</p>`
+                    },
+                    "Spoon": {
+                        title: "Spoon Body Shape",
+                        content: `<h3><i class="fas fa-spoon"></i> Greatttt here are some tips for your beautiful Spoon body shape</h3>
+                        <p><strong>Key features:</strong> Narrow shoulders, full hips, and a defined waist.</p>
+                        <p><strong>Top:</strong> Tops with details like horizontal stripes, bright colors, or patterns to add width to the shoulders and create balance with the hips. Boat necks, off-shoulder, or square necklines work well.</p>
+                        <p><strong>Bottom:</strong> A-line skirts, straight-leg or bootcut pants, or high-waisted pants to balance out your curves. Avoid anything too tight or skinny, as it can accentuate the hips.</p>
+                        <p><strong>Dresses:</strong> Fit-and-flare dresses or dresses that cinch at the waist and then flare out to add volume at the bottom.</p>
+                        <p><strong>Avoid:</strong> Super tight tops or overly bulky pants that can make your hips appear wider.</p>`
+                    },
+                    "Triangle": {
+                        title: "Triangle/Pear Body Shape",
+                        content: `<h3><i class="fas fa-triangle"></i> Greatttt here are some tips for your beautiful Triangle or Pear body shape</h3>
+                        <p><strong>Key features:</strong> Narrow shoulders and bust, wider hips.</p>
+                        <p><strong>Top:</strong> Tops with horizontal stripes, boat necks, or ruffles to add width to the upper body. Off-shoulder tops, cap sleeves, or even statement necklaces work well to draw attention upward.</p>
+                        <p><strong>Bottom:</strong> Dark-colored, well-tailored pants or skirts that don't cling to your hips. A-line skirts or straight-leg pants work best.</p>
+                        <p><strong>Dresses:</strong> A-line dresses that gently flare out from the waist. Avoid dresses that are too fitted at the hips.</p>
+                        <p><strong>Avoid:</strong> Skinny jeans, low-rise pants, or skirts that hug the hips too much.</p>`
+                    },
+                    "Inverted Triangle": {
+                        title: "Inverted Triangle Body Shape",
+                        content: `<h3><i class="fas fa-long-arrow-alt-down"></i> Greatttt here are some tips for your beautiful Inverted triangle body shape</h3>
+                        <p><strong>Key features:</strong> Broader shoulders, narrow hips, and waist.</p>
+                        <p><strong>Top:</strong> V-necks, scoop necks, or draped tops that create softness around the shoulders and minimize their width. You can also use tops with subtle patterns or details to balance out the upper body.</p>
+                        <p><strong>Bottom:</strong> A-line skirts, wide-leg pants, or high-waisted trousers to add volume and shape to your hips. Try to choose bottoms with textures or patterns to add dimension.</p>
+                        <p><strong>Dresses:</strong> Look for dresses that flare out from the waist, like fit-and-flare dresses, which add volume to the lower body.</p>
+                        <p><strong>Avoid:</strong> Bulky tops, shoulder pads, or overly structured jackets that emphasize width on the top half.</p>`
+                    },
+                    "Rectangle": {
+                        title: "Rectangle Body Shape",
+                        content: `<h3><i class="fas fa-square"></i> Greatttt here are some tips for your beautiful Rectangle body shape</h3>
+                        <p><strong>Key features:</strong> Bust, waist, and hips are about the same width, with little to no defined waist.</p>
+                        <p><strong>Top:</strong> Try peplum tops or tops that define the waist. Layering can also add dimension. Wrap tops, v-necks, or shirts with volume (like puff sleeves) can add shape.</p>
+                        <p><strong>Bottom:</strong> High-waisted pants, skirts, and tailored trousers that create curves by highlighting the waist. Flared pants or A-line skirts can also give the illusion of curves.</p>
+                        <p><strong>Dresses:</strong> Look for dresses with cinched waists, A-line, or bodycon styles that create curves and define your shape.</p>
+                        <p><strong>Avoid:</strong> Boxy or shapeless clothing that doesn't add any definition to your waist.</p>`
+                    },
+                    "Unique": {
+                        title: "Unique Body Shape",
+                        content: `<h3><i class="fas fa-star"></i> Greatttt here are some tips for your unique body shape</h3>
+                        <p>Since your body type is unique, focus on what makes you feel confident. Experiment with different styles to find what flatters your specific proportions. Consider consulting with a personal stylist for tailored advice.</p>`
+                    }
+                };
+                
+                return tips[bodyType] || tips["Unique"];
+            }
+            
+            // Calculate button click event
+            calculateBtn.addEventListener('click', function() {
+                const chest = document.getElementById('chest').value;
+                const waist = document.getElementById('waist').value;
+                const highHip = document.getElementById('highHip').value;
+                const hip = document.getElementById('hip').value;
+                
+                // Validate inputs
+                if (!chest || !waist || !highHip || !hip) {
+                    alert("Please enter all measurements to calculate your body type.");
+                    return;
+                }
+                
+                // Calculate body type
+                const result = calculateBodyType(chest, waist, highHip, hip);
+                
+                // Display results
+                bodyTypeResult.innerHTML = `
+                    <h3>${result.type} Body Shape</h3>
+                    <p>${result.description}</p>
+                `;
+                
+                // Get and set styling tips
+                const tips = getStylingTips(result.type);
+                stylingTips.innerHTML = `
+                    <h3>Styling Tips for ${tips.title}</h3>
+                    <div class="tips-content">${tips.content}</div>
+                `;
+                
+                // Show results section
+                resultsSection.style.display = 'block';
+                stylingTips.style.display = 'none';
+                tipsToggleBtn.textContent = 'Show Styling Tips for My Body Type';
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Toggle styling tips
+            tipsToggleBtn.addEventListener('click', function() {
+                if (stylingTips.style.display === 'none' || stylingTips.style.display === '') {
+                    stylingTips.style.display = 'block';
+                    tipsToggleBtn.textContent = 'Hide Styling Tips';
+                } else {
+                    stylingTips.style.display = 'none';
+                    tipsToggleBtn.textContent = 'Show Styling Tips for My Body Type';
+                }
+            });
+            
+            // Reset button click event
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('chest').value = '';
+                document.getElementById('waist').value = '';
+                document.getElementById('highHip').value = '';
+                document.getElementById('hip').value = '';
+                
+                resultsSection.style.display = 'none';
+                stylingTips.style.display = 'none';
+                tipsToggleBtn.textContent = 'Show Styling Tips for My Body Type';
+            });
+        });
+    </script>
+</body>
+</html>
